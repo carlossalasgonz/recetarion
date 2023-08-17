@@ -1,0 +1,152 @@
+
+users {
+	id int pk increments
+	userTypeId int > userRoles.id
+	email varchar(255) unique
+	password varchar(255)
+	token_facebook varchar(255)
+	token_twitter varchar(255)
+	firstName varchar(32)
+	lastName varchar(32)
+	description longtext
+	logged_in boolean
+	imageId int > images.id
+	followers int
+	created_at datetime
+	updated_at datetime
+	deleted_at datetime
+}
+
+recipes {
+	id int pk increments
+	publicationId int > publication.id
+	title varchar(255)
+	description longtext
+}
+
+groups {
+	id int pk increments
+	title varchar(255)
+	description longtext
+	imageId int > images.id
+	created_at datetime
+	updated_at datetime
+	deleted_at datetime
+}
+
+groupRole {
+	id int pk increments
+	groupId int > groups.id
+	title varchar(32)
+}
+
+userRoles {
+	id int pk increments
+	title varchar(32)
+}
+
+usersPermissions {
+	userRolesId int pk > userRoles.id
+	action varchar(255) pk
+}
+
+groupPermissions {
+	groupRoleId int pk > groupRole.id
+	action varchar(255) pk
+}
+
+ingredients {
+	id int pk increments
+	name varchar(32)
+	calories int
+	imageId int > images.id
+}
+
+recipeIngredients {
+	recipeId int pk > recipes.id
+	ingredientId int pk > ingredients.id
+	quantity int
+	unitId int > unit.id
+}
+
+Follows {
+	followerId int pk > users.id
+	followeeId int pk > users.id
+}
+
+subscription {
+	groupId int pk > groups.id
+	userId int pk > users.id
+	created_at datetime
+}
+
+images {
+	id int pk increments
+	type varchar(8)
+}
+
+critics {
+	id int pk increments
+	publicationId int > publication.id
+	recipeId int > recipes.id
+	title varchar(255)
+	description longtext
+}
+
+lists {
+	id int pk increments
+	userId int > users.id
+	title varchar(255)
+	description longtext
+}
+
+listRecipe {
+	listId int pk > lists.id
+	recipesId int pk > recipes.id
+}
+
+likeIngredient {
+	userId int pk > users.id
+	ingredientId int pk > ingredients.id
+	isDislike bool
+}
+
+steps {
+	id int pk increments
+	recipeId int > recipes.id
+	imageId int > images.id
+	description longtext
+}
+
+comments {
+	id int pk increments
+	userId int > users.id
+	publicationId int > publication.id
+	description longtext
+	imageId int > images.id
+	created_at datetime
+	updated_at datetime
+}
+
+publication {
+	id int pk increments
+	userId int > users.id
+}
+
+likePublication {
+	userId int pk > users.id
+	publicationId int pk > publication.id
+	isDislike bool
+}
+
+publicationImage {
+	publicationId int pk > publication.id
+	imageId int pk > images.id
+	order int
+}
+
+unit {
+	id int pk increments
+	title varchar(32)
+}
+
