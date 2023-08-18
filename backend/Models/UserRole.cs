@@ -14,4 +14,5 @@ public class UserRole{
 
     //Relationship
     public virtual ICollection<UserPermission> Permissions { get; } = new List<UserPermission>();
+    public virtual ICollection<User> Users { get; } = new List<User>();
 }

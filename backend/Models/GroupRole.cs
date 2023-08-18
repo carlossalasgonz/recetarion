@@ -12,4 +12,9 @@ public class GroupRole {
 
     [Column(TypeName = "varchar(255)")]
     public string Title { get; set; } = null!;
+
+    //Relationships
+    public virtual Group Group { get; } = null!;
+    public virtual ICollection<GroupPermission> Permissions { get; } = new List<GroupPermission>();
+
 }

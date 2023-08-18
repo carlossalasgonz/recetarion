@@ -17,4 +17,5 @@ public class Step {
 
     //Relationship
     public virtual Recipe Recipe { get; } = null!;
+    public virtual Image Image { get; } = null!;
 }

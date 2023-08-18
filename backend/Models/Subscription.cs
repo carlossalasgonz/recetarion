@@ -20,5 +20,4 @@ public class Subscription {
     //Relationships
     public virtual Group Group { get; } = null!;
     public virtual User User { get; } = null!;
-    public virtual GroupRole Role { get; } = null!;
 }

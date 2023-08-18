@@ -17,4 +17,6 @@ public class CustomList {
 
     //Relationship
     public virtual User User { get; } = null!;
+    public virtual ICollection<CustomListRecipe> RecipesPivot { get; } = new List<CustomListRecipe>();
+    public virtual ICollection<Recipe> Recipes { get; } = new List<Recipe>();
 }

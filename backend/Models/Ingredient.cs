@@ -19,4 +19,8 @@ public class Ingredient {
 
     //Relationships
     public virtual Image Image { get; } = null!;
+    public virtual ICollection<LikeIngredient> Likes { get; } = new List<LikeIngredient>();
+    public virtual ICollection<User> Users { get; } = new List<User>();
+    public virtual ICollection<RecipeIngredient> RecipePivot { get; } = new List<RecipeIngredient>();
+    public virtual ICollection<Recipe> Recipes { get; } = new List<Recipe>();
 }

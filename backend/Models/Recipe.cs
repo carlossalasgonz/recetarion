@@ -19,5 +19,9 @@ public class Recipe {
 
     //Relationships
     public virtual Publication Publication { get; } = null!;
+    public virtual ICollection<RecipeIngredient> IngredientsQuantitys { get; } = new List<RecipeIngredient>();
     public virtual ICollection<Ingredient> Ingredients { get; } = new List<Ingredient>();
+    public virtual ICollection<Step> Steps { get; } = new List<Step>();
+    public virtual ICollection<Critic> Critics { get; } = new List<Critic>();
+    public virtual ICollection<CustomListRecipe> Lists { get; } = new List<CustomListRecipe>();
 }

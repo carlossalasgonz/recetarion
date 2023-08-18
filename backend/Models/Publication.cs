@@ -13,4 +13,10 @@ public class Publication {
 
     //Relationships
     public virtual User User { get; } = null!;
+    public virtual Critic? Critic { get; }
+    public virtual Recipe? Recipe { get; }
+    public virtual ICollection<LikePublication> Likes { get; } = new List<LikePublication>();
+    public virtual ICollection<User> UsersLike { get; } = new List<User>();
+    public virtual ICollection<Comment> Comments { get; } = new List<Comment>();
+    public virtual ICollection<Image> Images { get; } = new List<Image>(); 
 }

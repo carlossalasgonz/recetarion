@@ -24,4 +24,7 @@ public class Group {
 
     //Relationships
     public virtual Image Image { get; } = null!;
+    public virtual ICollection<GroupRole> Roles { get; } = new List<GroupRole>();
+    public virtual ICollection<Subscription> Subscriptions { get; } = new List<Subscription>();
+    public virtual ICollection<User> Users { get; } = new List<User>();
 }
