@@ -16,7 +16,12 @@
       "launchUrl": "swagger",
       "applicationUrl": "https://localhost:7007;http://localhost:5049",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        
+        "Seeder:Admin:Username": "Recetarion Admin",
+        "Seeder:Admin:Email": "admin@recetarion.com",
+        "Seeder:Admin:Password": "recetarioncom",
+        "Seeder:Image:Name": "Image.png"
       }
     },
     "IIS Express": {

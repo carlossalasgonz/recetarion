@@ -6,7 +6,7 @@ namespace Recetarion.Models;
 public class Image {
 
     [Column(Order = 0), Key]
-    public Guid Id { get; private set; }
+    public Guid Id { get; set; }
     
     [Column(TypeName = "varchar(255)")]
     public string Name { get; set;} = null!;

@@ -5,7 +5,7 @@ namespace Recetarion.Models;
 
 public class CustomList {
     [Column(Order = 0), Key]
-    public Guid Id { get; private set; }
+    public Guid Id { get; set; }
 
     [ForeignKey("User")]
     public Guid UserId { get; set; }

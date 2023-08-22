@@ -7,7 +7,7 @@ namespace Recetarion.Models;
 public class UserRole{
 
     [Column(Order = 0), Key]
-    public Guid Id { get; private set; }
+    public Guid Id { get; set; }
 
     [Column( TypeName = "varchar(32)")]
     public string Title { get; set; } = null!;

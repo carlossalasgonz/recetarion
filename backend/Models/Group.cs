@@ -6,7 +6,7 @@ namespace Recetarion.Models;
 public class Group {
 
     [Column(Order = 0), Key]
-    public Guid Id { get; private set;}
+    public Guid Id { get; set;}
 
     [Column(TypeName = "varchar(255)")]
     public string Title { get; set; } = null!;
@@ -16,11 +16,11 @@ public class Group {
     [ForeignKey("Image")]
     public Guid ImageId { get; set; }
 
-    public DateTime CreatedAt { get; private set; }
+    public DateTime CreatedAt { get; set; }
     
-    public DateTime UpdatedAt { get; private set; }
+    public DateTime UpdatedAt { get; set; }
 
-    public DateTime DeletedAt { get; private set; }
+    public DateTime DeletedAt { get; set; }
 
     //Relationships
     public virtual Image Image { get; } = null!;

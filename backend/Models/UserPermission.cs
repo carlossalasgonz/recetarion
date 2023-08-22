@@ -7,7 +7,7 @@ namespace Recetarion.Models;
 [PrimaryKey(nameof(UserRolesId), nameof(Action) )]
 public class UserPermission {
     [Column(Order = 0), Key, ForeignKey("Role")]
-    public Guid UserRolesId { get; private set; }
+    public Guid UserRolesId { get; set; }
     
     [Column(Order = 1), Key]
     public string Action { get; set; } = null!;

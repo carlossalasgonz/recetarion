@@ -7,10 +7,10 @@ namespace Recetarion.Models;
 [PrimaryKey(nameof(UserId), nameof(IngredientId))]
 public class LikeIngredient {
     [Column(Order = 0), Key]
-    public Guid UserId { get; private set; }
+    public Guid UserId { get; set; }
 
     [Column(Order = 1), Key, ForeignKey("Ingredient")]
-    public Guid IngredientId { get; private set; }
+    public Guid IngredientId { get; set; }
 
     public bool IsDislike { get; set; }
 

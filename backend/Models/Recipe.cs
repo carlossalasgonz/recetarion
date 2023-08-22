@@ -7,7 +7,7 @@ namespace Recetarion.Models;
 
 public class Recipe {
     [Column(Order = 0), Key]
-    public Guid Id { get; private set; }
+    public Guid Id { get; set; }
 
     [ForeignKey("Publication")]
     public Guid PublicationId { get; set; }

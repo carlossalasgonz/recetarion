@@ -6,7 +6,7 @@ namespace Recetarion.Models;
 public class Publication {
 
     [Column(Order = 0), Key]
-    public Guid Id { get; private set; }
+    public Guid Id { get; set; }
 
     [ForeignKey("User")]
     public Guid UserId { get; set; }

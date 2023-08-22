@@ -7,10 +7,10 @@ namespace Recetarion.Models;
 [PrimaryKey(nameof(RecipeId), nameof(IngredientId))]
 public class RecipeIngredient {
     [Column(Order = 0), Key, ForeignKey("Recipe")]
-    public Guid RecipeId { get; private set; }
+    public Guid RecipeId { get; set; }
 
     [Column(Order = 1), Key, ForeignKey("Ingredient")]
-    public Guid IngredientId { get; private set;}
+    public Guid IngredientId { get; set;}
 
     public uint quantity { get; set; }
 
