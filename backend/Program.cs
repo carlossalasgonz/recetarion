@@ -14,6 +14,11 @@ builder.Services.AddSwaggerGen();
 string connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<RecetarionDbContext>( options => options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString) ));
 
+Environment.SetEnvironmentVariable("Seeder:Admin:Username", builder.Configuration.GetValue<string>("Seeder:Admin:Username"));
+Environment.SetEnvironmentVariable("Seeder:Admin:Email", builder.Configuration.GetValue<string>("Seeder:Admin:Email"));
+Environment.SetEnvironmentVariable("Seeder:Admin:Password", builder.Configuration.GetValue<string>("Seeder:Admin:Password"));
+Environment.SetEnvironmentVariable("Seeder:Image:Name", builder.Configuration.GetValue<string>("Seeder:Image:Name"));
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

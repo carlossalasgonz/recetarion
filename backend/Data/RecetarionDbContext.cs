@@ -31,5 +31,7 @@ public class RecetarionDbContext : DbContext{
 
     protected override void OnModelCreating(ModelBuilder modelBuilder) {
         base.OnModelCreating(modelBuilder);
+
+        new MasterSeeder().Seed( modelBuilder, this );
     }
 }
