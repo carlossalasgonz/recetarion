@@ -11,8 +11,8 @@ using Recetarion.Data;
 namespace backend.Migrations
 {
     [DbContext(typeof(RecetarionDbContext))]
-    [Migration("20230822081712_TablesUpdate")]
-    partial class TablesUpdate
+    [Migration("20230822092259_TableUpdate")]
+    partial class TableUpdate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -50,6 +50,21 @@ namespace backend.Migrations
                     b.HasIndex("RecipesId");
 
                     b.ToTable("IngredientRecipe");
+                });
+
+            modelBuilder.Entity("IngredientUser", b =>
+                {
+                    b.Property<Guid>("IngredientsId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<Guid>("UsersId")
+                        .HasColumnType("char(36)");
+
+                    b.HasKey("IngredientsId", "UsersId");
+
+                    b.HasIndex("UsersId");
+
+                    b.ToTable("IngredientUser");
                 });
 
             modelBuilder.Entity("PublicationUser", b =>
@@ -93,19 +108,11 @@ namespace backend.Migrations
                     b.Property<Guid>("UserId")
                         .HasColumnType("char(36)");
 
-                    b.Property<string>("UserPermissionAction")
-                        .HasColumnType("varchar(255)");
-
-                    b.Property<Guid?>("UserPermissionUserRolesId")
-                        .HasColumnType("char(36)");
-
                     b.HasKey("Id");
 
                     b.HasIndex("PublicationId");
 
                     b.HasIndex("UserId");
-
-                    b.HasIndex("UserPermissionUserRolesId", "UserPermissionAction");
 
                     b.ToTable("Comments");
                 });
@@ -155,17 +162,9 @@ namespace backend.Migrations
                     b.Property<Guid>("UserId")
                         .HasColumnType("char(36)");
 
-                    b.Property<string>("UserPermissionAction")
-                        .HasColumnType("varchar(255)");
-
-                    b.Property<Guid?>("UserPermissionUserRolesId")
-                        .HasColumnType("char(36)");
-
                     b.HasKey("Id");
 
                     b.HasIndex("UserId");
-
-                    b.HasIndex("UserPermissionUserRolesId", "UserPermissionAction");
 
                     b.ToTable("CustomLists");
                 });
@@ -231,15 +230,7 @@ namespace backend.Migrations
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<string>("UserPermissionAction")
-                        .HasColumnType("varchar(255)");
-
-                    b.Property<Guid?>("UserPermissionUserRolesId")
-                        .HasColumnType("char(36)");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("UserPermissionUserRolesId", "UserPermissionAction");
 
                     b.ToTable("Groups");
                 });
@@ -325,15 +316,7 @@ namespace backend.Migrations
                         .IsRequired()
                         .HasColumnType("varchar(32)");
 
-                    b.Property<string>("UserPermissionAction")
-                        .HasColumnType("varchar(255)");
-
-                    b.Property<Guid?>("UserPermissionUserRolesId")
-                        .HasColumnType("char(36)");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("UserPermissionUserRolesId", "UserPermissionAction");
 
                     b.ToTable("Ingredients");
                 });
@@ -351,17 +334,9 @@ namespace backend.Migrations
                     b.Property<bool>("IsDislike")
                         .HasColumnType("tinyint(1)");
 
-                    b.Property<string>("UserPermissionAction")
-                        .HasColumnType("varchar(255)");
-
-                    b.Property<Guid?>("UserPermissionUserRolesId")
-                        .HasColumnType("char(36)");
-
                     b.HasKey("UserId", "IngredientId");
 
                     b.HasIndex("IngredientId");
-
-                    b.HasIndex("UserPermissionUserRolesId", "UserPermissionAction");
 
                     b.ToTable("LikeIngredients");
                 });
@@ -376,17 +351,9 @@ namespace backend.Migrations
                         .HasColumnType("char(36)")
                         .HasColumnOrder(1);
 
-                    b.Property<string>("UserPermissionAction")
-                        .HasColumnType("varchar(255)");
-
-                    b.Property<Guid?>("UserPermissionUserRolesId")
-                        .HasColumnType("char(36)");
-
                     b.HasKey("UserId", "PublicationId");
 
                     b.HasIndex("PublicationId");
-
-                    b.HasIndex("UserPermissionUserRolesId", "UserPermissionAction");
 
                     b.ToTable("LikePublications");
                 });
@@ -401,15 +368,7 @@ namespace backend.Migrations
                     b.Property<Guid>("UserId")
                         .HasColumnType("char(36)");
 
-                    b.Property<string>("UserPermissionAction")
-                        .HasColumnType("varchar(255)");
-
-                    b.Property<Guid?>("UserPermissionUserRolesId")
-                        .HasColumnType("char(36)");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("UserPermissionUserRolesId", "UserPermissionAction");
 
                     b.ToTable("Publications");
                 });
@@ -523,17 +482,9 @@ namespace backend.Migrations
                     b.Property<Guid>("RoleId")
                         .HasColumnType("char(36)");
 
-                    b.Property<string>("UserPermissionAction")
-                        .HasColumnType("varchar(255)");
-
-                    b.Property<Guid?>("UserPermissionUserRolesId")
-                        .HasColumnType("char(36)");
-
                     b.HasKey("GroupId", "UserId");
 
                     b.HasIndex("UserId");
-
-                    b.HasIndex("UserPermissionUserRolesId", "UserPermissionAction");
 
                     b.ToTable("Subscriptions");
                 });
@@ -594,9 +545,6 @@ namespace backend.Migrations
                     b.Property<Guid>("ImageId")
                         .HasColumnType("char(36)");
 
-                    b.Property<Guid?>("IngredientId")
-                        .HasColumnType("char(36)");
-
                     b.Property<string>("PasswordHash")
                         .IsRequired()
                         .HasColumnType("varchar(255)");
@@ -625,8 +573,6 @@ namespace backend.Migrations
 
                     b.HasIndex("Email")
                         .IsUnique();
-
-                    b.HasIndex("IngredientId");
 
                     b.HasIndex("UserRoleId");
 
@@ -699,6 +645,21 @@ namespace backend.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("IngredientUser", b =>
+                {
+                    b.HasOne("Recetarion.Models.Ingredient", null)
+                        .WithMany()
+                        .HasForeignKey("IngredientsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Recetarion.Models.User", null)
+                        .WithMany()
+                        .HasForeignKey("UsersId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("PublicationUser", b =>
                 {
                     b.HasOne("Recetarion.Models.Publication", null)
@@ -727,10 +688,6 @@ namespace backend.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("Recetarion.Models.UserPermission", null)
-                        .WithMany("Comments")
-                        .HasForeignKey("UserPermissionUserRolesId", "UserPermissionAction");
                 });
 
             modelBuilder.Entity("Recetarion.Models.Critic", b =>
@@ -749,10 +706,6 @@ namespace backend.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("Recetarion.Models.UserPermission", null)
-                        .WithMany("Lists")
-                        .HasForeignKey("UserPermissionUserRolesId", "UserPermissionAction");
                 });
 
             modelBuilder.Entity("Recetarion.Models.CustomListRecipe", b =>
@@ -789,13 +742,6 @@ namespace backend.Migrations
                     b.Navigation("Follower");
                 });
 
-            modelBuilder.Entity("Recetarion.Models.Group", b =>
-                {
-                    b.HasOne("Recetarion.Models.UserPermission", null)
-                        .WithMany("Groups")
-                        .HasForeignKey("UserPermissionUserRolesId", "UserPermissionAction");
-                });
-
             modelBuilder.Entity("Recetarion.Models.GroupPermission", b =>
                 {
                     b.HasOne("Recetarion.Models.GroupRole", null)
@@ -821,13 +767,6 @@ namespace backend.Migrations
                         .HasForeignKey("PublicationId");
                 });
 
-            modelBuilder.Entity("Recetarion.Models.Ingredient", b =>
-                {
-                    b.HasOne("Recetarion.Models.UserPermission", null)
-                        .WithMany("Ingredients")
-                        .HasForeignKey("UserPermissionUserRolesId", "UserPermissionAction");
-                });
-
             modelBuilder.Entity("Recetarion.Models.LikeIngredient", b =>
                 {
                     b.HasOne("Recetarion.Models.Ingredient", null)
@@ -841,10 +780,6 @@ namespace backend.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("Recetarion.Models.UserPermission", null)
-                        .WithMany("LikeIngredients")
-                        .HasForeignKey("UserPermissionUserRolesId", "UserPermissionAction");
                 });
 
             modelBuilder.Entity("Recetarion.Models.LikePublication", b =>
@@ -860,17 +795,6 @@ namespace backend.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("Recetarion.Models.UserPermission", null)
-                        .WithMany("LikePublications")
-                        .HasForeignKey("UserPermissionUserRolesId", "UserPermissionAction");
-                });
-
-            modelBuilder.Entity("Recetarion.Models.Publication", b =>
-                {
-                    b.HasOne("Recetarion.Models.UserPermission", null)
-                        .WithMany("Publications")
-                        .HasForeignKey("UserPermissionUserRolesId", "UserPermissionAction");
                 });
 
             modelBuilder.Entity("Recetarion.Models.Recipe", b =>
@@ -917,18 +841,10 @@ namespace backend.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("Recetarion.Models.UserPermission", null)
-                        .WithMany("Subscriptions")
-                        .HasForeignKey("UserPermissionUserRolesId", "UserPermissionAction");
                 });
 
             modelBuilder.Entity("Recetarion.Models.User", b =>
                 {
-                    b.HasOne("Recetarion.Models.Ingredient", null)
-                        .WithMany("Users")
-                        .HasForeignKey("IngredientId");
-
                     b.HasOne("Recetarion.Models.UserRole", null)
                         .WithMany("Users")
                         .HasForeignKey("UserRoleId")
@@ -967,8 +883,6 @@ namespace backend.Migrations
                     b.Navigation("Likes");
 
                     b.Navigation("RecipePivot");
-
-                    b.Navigation("Users");
                 });
 
             modelBuilder.Entity("Recetarion.Models.Publication", b =>
@@ -1000,25 +914,6 @@ namespace backend.Migrations
                     b.Navigation("LikePublications");
 
                     b.Navigation("Lists");
-
-                    b.Navigation("Subscriptions");
-                });
-
-            modelBuilder.Entity("Recetarion.Models.UserPermission", b =>
-                {
-                    b.Navigation("Comments");
-
-                    b.Navigation("Groups");
-
-                    b.Navigation("Ingredients");
-
-                    b.Navigation("LikeIngredients");
-
-                    b.Navigation("LikePublications");
-
-                    b.Navigation("Lists");
-
-                    b.Navigation("Publications");
 
                     b.Navigation("Subscriptions");
                 });

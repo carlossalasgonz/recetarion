@@ -62,4 +62,6 @@ public class User {
     public virtual ICollection<LikePublication> LikePublications { get; } = new List<LikePublication>();
     
     public virtual ICollection<LikeIngredient> LikeIngredients { get; } = new List<LikeIngredient>();
+    
+    public virtual ICollection<Ingredient> Ingredients { get; } = new List<Ingredient>();
 }

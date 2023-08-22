@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace backend.Migrations
 {
     /// <inheritdoc />
-    public partial class TablesUpdate : Migration
+    public partial class TableUpdate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -31,6 +31,10 @@ namespace backend.Migrations
                 name: "LoggedIn",
                 table: "Users");
 
+            migrationBuilder.DropColumn(
+                name: "RecipeId",
+                table: "Ingredients");
+
             migrationBuilder.RenameColumn(
                 name: "Password",
                 table: "Users",
@@ -40,11 +44,6 @@ namespace backend.Migrations
                 name: "Followers",
                 table: "Users",
                 newName: "FollowerCount");
-
-            migrationBuilder.RenameColumn(
-                name: "RecipeId",
-                table: "Ingredients",
-                newName: "UserPermissionUserRolesId");
 
             migrationBuilder.AlterColumn<DateTime>(
                 name: "UpdatedAt",
@@ -61,13 +60,6 @@ namespace backend.Migrations
                 nullable: true,
                 oldClrType: typeof(DateTime),
                 oldType: "datetime(6)");
-
-            migrationBuilder.AddColumn<Guid>(
-                name: "IngredientId",
-                table: "Users",
-                type: "char(36)",
-                nullable: true,
-                collation: "ascii_general_ci");
 
             migrationBuilder.AddColumn<string>(
                 name: "PasswordHash",
@@ -115,65 +107,9 @@ namespace backend.Migrations
                 defaultValue: "")
                 .Annotation("MySql:CharSet", "utf8mb4");
 
-            migrationBuilder.AddColumn<string>(
-                name: "UserPermissionAction",
-                table: "Subscriptions",
-                type: "varchar(255)",
-                nullable: true)
-                .Annotation("MySql:CharSet", "utf8mb4");
-
-            migrationBuilder.AddColumn<Guid>(
-                name: "UserPermissionUserRolesId",
-                table: "Subscriptions",
-                type: "char(36)",
-                nullable: true,
-                collation: "ascii_general_ci");
-
             migrationBuilder.AddColumn<Guid>(
                 name: "CustomListId",
                 table: "Recipes",
-                type: "char(36)",
-                nullable: true,
-                collation: "ascii_general_ci");
-
-            migrationBuilder.AddColumn<string>(
-                name: "UserPermissionAction",
-                table: "Publications",
-                type: "varchar(255)",
-                nullable: true)
-                .Annotation("MySql:CharSet", "utf8mb4");
-
-            migrationBuilder.AddColumn<Guid>(
-                name: "UserPermissionUserRolesId",
-                table: "Publications",
-                type: "char(36)",
-                nullable: true,
-                collation: "ascii_general_ci");
-
-            migrationBuilder.AddColumn<string>(
-                name: "UserPermissionAction",
-                table: "LikePublications",
-                type: "varchar(255)",
-                nullable: true)
-                .Annotation("MySql:CharSet", "utf8mb4");
-
-            migrationBuilder.AddColumn<Guid>(
-                name: "UserPermissionUserRolesId",
-                table: "LikePublications",
-                type: "char(36)",
-                nullable: true,
-                collation: "ascii_general_ci");
-
-            migrationBuilder.AddColumn<string>(
-                name: "UserPermissionAction",
-                table: "LikeIngredients",
-                type: "varchar(255)",
-                nullable: true)
-                .Annotation("MySql:CharSet", "utf8mb4");
-
-            migrationBuilder.AddColumn<Guid>(
-                name: "UserPermissionUserRolesId",
-                table: "LikeIngredients",
                 type: "char(36)",
                 nullable: true,
                 collation: "ascii_general_ci");
@@ -185,58 +121,9 @@ namespace backend.Migrations
                 nullable: false,
                 defaultValue: 0f);
 
-            migrationBuilder.AddColumn<string>(
-                name: "UserPermissionAction",
-                table: "Ingredients",
-                type: "varchar(255)",
-                nullable: true)
-                .Annotation("MySql:CharSet", "utf8mb4");
-
             migrationBuilder.AddColumn<Guid>(
                 name: "PublicationId",
                 table: "Images",
-                type: "char(36)",
-                nullable: true,
-                collation: "ascii_general_ci");
-
-            migrationBuilder.AddColumn<string>(
-                name: "UserPermissionAction",
-                table: "Groups",
-                type: "varchar(255)",
-                nullable: true)
-                .Annotation("MySql:CharSet", "utf8mb4");
-
-            migrationBuilder.AddColumn<Guid>(
-                name: "UserPermissionUserRolesId",
-                table: "Groups",
-                type: "char(36)",
-                nullable: true,
-                collation: "ascii_general_ci");
-
-            migrationBuilder.AddColumn<string>(
-                name: "UserPermissionAction",
-                table: "CustomLists",
-                type: "varchar(255)",
-                nullable: true)
-                .Annotation("MySql:CharSet", "utf8mb4");
-
-            migrationBuilder.AddColumn<Guid>(
-                name: "UserPermissionUserRolesId",
-                table: "CustomLists",
-                type: "char(36)",
-                nullable: true,
-                collation: "ascii_general_ci");
-
-            migrationBuilder.AddColumn<string>(
-                name: "UserPermissionAction",
-                table: "Comments",
-                type: "varchar(255)",
-                nullable: true)
-                .Annotation("MySql:CharSet", "utf8mb4");
-
-            migrationBuilder.AddColumn<Guid>(
-                name: "UserPermissionUserRolesId",
-                table: "Comments",
                 type: "char(36)",
                 nullable: true,
                 collation: "ascii_general_ci");
@@ -292,6 +179,31 @@ namespace backend.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
+                name: "IngredientUser",
+                columns: table => new
+                {
+                    IngredientsId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    UsersId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_IngredientUser", x => new { x.IngredientsId, x.UsersId });
+                    table.ForeignKey(
+                        name: "FK_IngredientUser_Ingredients_IngredientsId",
+                        column: x => x.IngredientsId,
+                        principalTable: "Ingredients",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_IngredientUser_Users_UsersId",
+                        column: x => x.UsersId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
                 name: "PublicationUser",
                 columns: table => new
                 {
@@ -317,11 +229,6 @@ namespace backend.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Users_IngredientId",
-                table: "Users",
-                column: "IngredientId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Users_UserRoleId",
                 table: "Users",
                 column: "UserRoleId");
@@ -330,11 +237,6 @@ namespace backend.Migrations
                 name: "IX_Subscriptions_UserId",
                 table: "Subscriptions",
                 column: "UserId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Subscriptions_UserPermissionUserRolesId_UserPermissionAction",
-                table: "Subscriptions",
-                columns: new[] { "UserPermissionUserRolesId", "UserPermissionAction" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Steps_RecipeId",
@@ -352,19 +254,9 @@ namespace backend.Migrations
                 column: "IngredientId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Publications_UserPermissionUserRolesId_UserPermissionAction",
-                table: "Publications",
-                columns: new[] { "UserPermissionUserRolesId", "UserPermissionAction" });
-
-            migrationBuilder.CreateIndex(
                 name: "IX_LikePublications_PublicationId",
                 table: "LikePublications",
                 column: "PublicationId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_LikePublications_UserPermissionUserRolesId_UserPermissionAct~",
-                table: "LikePublications",
-                columns: new[] { "UserPermissionUserRolesId", "UserPermissionAction" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_LikeIngredients_IngredientId",
@@ -372,24 +264,9 @@ namespace backend.Migrations
                 column: "IngredientId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_LikeIngredients_UserPermissionUserRolesId_UserPermissionActi~",
-                table: "LikeIngredients",
-                columns: new[] { "UserPermissionUserRolesId", "UserPermissionAction" });
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Ingredients_UserPermissionUserRolesId_UserPermissionAction",
-                table: "Ingredients",
-                columns: new[] { "UserPermissionUserRolesId", "UserPermissionAction" });
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Images_PublicationId",
                 table: "Images",
                 column: "PublicationId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Groups_UserPermissionUserRolesId_UserPermissionAction",
-                table: "Groups",
-                columns: new[] { "UserPermissionUserRolesId", "UserPermissionAction" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_GroupRoles_GroupId",
@@ -400,11 +277,6 @@ namespace backend.Migrations
                 name: "IX_CustomLists_UserId",
                 table: "CustomLists",
                 column: "UserId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_CustomLists_UserPermissionUserRolesId_UserPermissionAction",
-                table: "CustomLists",
-                columns: new[] { "UserPermissionUserRolesId", "UserPermissionAction" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_CustomListRecipes_RecipeId",
@@ -427,11 +299,6 @@ namespace backend.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Comments_UserPermissionUserRolesId_UserPermissionAction",
-                table: "Comments",
-                columns: new[] { "UserPermissionUserRolesId", "UserPermissionAction" });
-
-            migrationBuilder.CreateIndex(
                 name: "IX_GroupUser_UsersId",
                 table: "GroupUser",
                 column: "UsersId");
@@ -440,6 +307,11 @@ namespace backend.Migrations
                 name: "IX_IngredientRecipe_RecipesId",
                 table: "IngredientRecipe",
                 column: "RecipesId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_IngredientUser_UsersId",
+                table: "IngredientUser",
+                column: "UsersId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_PublicationUser_UsersLikeId",
@@ -453,13 +325,6 @@ namespace backend.Migrations
                 principalTable: "Publications",
                 principalColumn: "Id",
                 onDelete: ReferentialAction.Cascade);
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_Comments_UserPermissions_UserPermissionUserRolesId_UserPermi~",
-                table: "Comments",
-                columns: new[] { "UserPermissionUserRolesId", "UserPermissionAction" },
-                principalTable: "UserPermissions",
-                principalColumns: new[] { "UserRolesId", "Action" });
 
             migrationBuilder.AddForeignKey(
                 name: "FK_Comments_Users_UserId",
@@ -492,13 +357,6 @@ namespace backend.Migrations
                 principalTable: "Recipes",
                 principalColumn: "Id",
                 onDelete: ReferentialAction.Cascade);
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_CustomLists_UserPermissions_UserPermissionUserRolesId_UserPe~",
-                table: "CustomLists",
-                columns: new[] { "UserPermissionUserRolesId", "UserPermissionAction" },
-                principalTable: "UserPermissions",
-                principalColumns: new[] { "UserRolesId", "Action" });
 
             migrationBuilder.AddForeignKey(
                 name: "FK_CustomLists_Users_UserId",
@@ -525,25 +383,11 @@ namespace backend.Migrations
                 onDelete: ReferentialAction.Cascade);
 
             migrationBuilder.AddForeignKey(
-                name: "FK_Groups_UserPermissions_UserPermissionUserRolesId_UserPermiss~",
-                table: "Groups",
-                columns: new[] { "UserPermissionUserRolesId", "UserPermissionAction" },
-                principalTable: "UserPermissions",
-                principalColumns: new[] { "UserRolesId", "Action" });
-
-            migrationBuilder.AddForeignKey(
                 name: "FK_Images_Publications_PublicationId",
                 table: "Images",
                 column: "PublicationId",
                 principalTable: "Publications",
                 principalColumn: "Id");
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_Ingredients_UserPermissions_UserPermissionUserRolesId_UserPe~",
-                table: "Ingredients",
-                columns: new[] { "UserPermissionUserRolesId", "UserPermissionAction" },
-                principalTable: "UserPermissions",
-                principalColumns: new[] { "UserRolesId", "Action" });
 
             migrationBuilder.AddForeignKey(
                 name: "FK_LikeIngredients_Ingredients_IngredientId",
@@ -552,13 +396,6 @@ namespace backend.Migrations
                 principalTable: "Ingredients",
                 principalColumn: "Id",
                 onDelete: ReferentialAction.Cascade);
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_LikeIngredients_UserPermissions_UserPermissionUserRolesId_Us~",
-                table: "LikeIngredients",
-                columns: new[] { "UserPermissionUserRolesId", "UserPermissionAction" },
-                principalTable: "UserPermissions",
-                principalColumns: new[] { "UserRolesId", "Action" });
 
             migrationBuilder.AddForeignKey(
                 name: "FK_LikeIngredients_Users_UserId",
@@ -577,26 +414,12 @@ namespace backend.Migrations
                 onDelete: ReferentialAction.Cascade);
 
             migrationBuilder.AddForeignKey(
-                name: "FK_LikePublications_UserPermissions_UserPermissionUserRolesId_U~",
-                table: "LikePublications",
-                columns: new[] { "UserPermissionUserRolesId", "UserPermissionAction" },
-                principalTable: "UserPermissions",
-                principalColumns: new[] { "UserRolesId", "Action" });
-
-            migrationBuilder.AddForeignKey(
                 name: "FK_LikePublications_Users_UserId",
                 table: "LikePublications",
                 column: "UserId",
                 principalTable: "Users",
                 principalColumn: "Id",
                 onDelete: ReferentialAction.Cascade);
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_Publications_UserPermissions_UserPermissionUserRolesId_UserP~",
-                table: "Publications",
-                columns: new[] { "UserPermissionUserRolesId", "UserPermissionAction" },
-                principalTable: "UserPermissions",
-                principalColumns: new[] { "UserRolesId", "Action" });
 
             migrationBuilder.AddForeignKey(
                 name: "FK_RecipeIngredients_Ingredients_IngredientId",
@@ -638,26 +461,12 @@ namespace backend.Migrations
                 onDelete: ReferentialAction.Cascade);
 
             migrationBuilder.AddForeignKey(
-                name: "FK_Subscriptions_UserPermissions_UserPermissionUserRolesId_User~",
-                table: "Subscriptions",
-                columns: new[] { "UserPermissionUserRolesId", "UserPermissionAction" },
-                principalTable: "UserPermissions",
-                principalColumns: new[] { "UserRolesId", "Action" });
-
-            migrationBuilder.AddForeignKey(
                 name: "FK_Subscriptions_Users_UserId",
                 table: "Subscriptions",
                 column: "UserId",
                 principalTable: "Users",
                 principalColumn: "Id",
                 onDelete: ReferentialAction.Cascade);
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_Users_Ingredients_IngredientId",
-                table: "Users",
-                column: "IngredientId",
-                principalTable: "Ingredients",
-                principalColumn: "Id");
 
             migrationBuilder.AddForeignKey(
                 name: "FK_Users_UserRoles_UserRoleId",
@@ -673,10 +482,6 @@ namespace backend.Migrations
         {
             migrationBuilder.DropForeignKey(
                 name: "FK_Comments_Publications_PublicationId",
-                table: "Comments");
-
-            migrationBuilder.DropForeignKey(
-                name: "FK_Comments_UserPermissions_UserPermissionUserRolesId_UserPermi~",
                 table: "Comments");
 
             migrationBuilder.DropForeignKey(
@@ -696,10 +501,6 @@ namespace backend.Migrations
                 table: "CustomListRecipes");
 
             migrationBuilder.DropForeignKey(
-                name: "FK_CustomLists_UserPermissions_UserPermissionUserRolesId_UserPe~",
-                table: "CustomLists");
-
-            migrationBuilder.DropForeignKey(
                 name: "FK_CustomLists_Users_UserId",
                 table: "CustomLists");
 
@@ -712,23 +513,11 @@ namespace backend.Migrations
                 table: "GroupRoles");
 
             migrationBuilder.DropForeignKey(
-                name: "FK_Groups_UserPermissions_UserPermissionUserRolesId_UserPermiss~",
-                table: "Groups");
-
-            migrationBuilder.DropForeignKey(
                 name: "FK_Images_Publications_PublicationId",
                 table: "Images");
 
             migrationBuilder.DropForeignKey(
-                name: "FK_Ingredients_UserPermissions_UserPermissionUserRolesId_UserPe~",
-                table: "Ingredients");
-
-            migrationBuilder.DropForeignKey(
                 name: "FK_LikeIngredients_Ingredients_IngredientId",
-                table: "LikeIngredients");
-
-            migrationBuilder.DropForeignKey(
-                name: "FK_LikeIngredients_UserPermissions_UserPermissionUserRolesId_Us~",
                 table: "LikeIngredients");
 
             migrationBuilder.DropForeignKey(
@@ -740,16 +529,8 @@ namespace backend.Migrations
                 table: "LikePublications");
 
             migrationBuilder.DropForeignKey(
-                name: "FK_LikePublications_UserPermissions_UserPermissionUserRolesId_U~",
-                table: "LikePublications");
-
-            migrationBuilder.DropForeignKey(
                 name: "FK_LikePublications_Users_UserId",
                 table: "LikePublications");
-
-            migrationBuilder.DropForeignKey(
-                name: "FK_Publications_UserPermissions_UserPermissionUserRolesId_UserP~",
-                table: "Publications");
 
             migrationBuilder.DropForeignKey(
                 name: "FK_RecipeIngredients_Ingredients_IngredientId",
@@ -772,16 +553,8 @@ namespace backend.Migrations
                 table: "Subscriptions");
 
             migrationBuilder.DropForeignKey(
-                name: "FK_Subscriptions_UserPermissions_UserPermissionUserRolesId_User~",
-                table: "Subscriptions");
-
-            migrationBuilder.DropForeignKey(
                 name: "FK_Subscriptions_Users_UserId",
                 table: "Subscriptions");
-
-            migrationBuilder.DropForeignKey(
-                name: "FK_Users_Ingredients_IngredientId",
-                table: "Users");
 
             migrationBuilder.DropForeignKey(
                 name: "FK_Users_UserRoles_UserRoleId",
@@ -794,11 +567,10 @@ namespace backend.Migrations
                 name: "IngredientRecipe");
 
             migrationBuilder.DropTable(
-                name: "PublicationUser");
+                name: "IngredientUser");
 
-            migrationBuilder.DropIndex(
-                name: "IX_Users_IngredientId",
-                table: "Users");
+            migrationBuilder.DropTable(
+                name: "PublicationUser");
 
             migrationBuilder.DropIndex(
                 name: "IX_Users_UserRoleId",
@@ -806,10 +578,6 @@ namespace backend.Migrations
 
             migrationBuilder.DropIndex(
                 name: "IX_Subscriptions_UserId",
-                table: "Subscriptions");
-
-            migrationBuilder.DropIndex(
-                name: "IX_Subscriptions_UserPermissionUserRolesId_UserPermissionAction",
                 table: "Subscriptions");
 
             migrationBuilder.DropIndex(
@@ -825,15 +593,7 @@ namespace backend.Migrations
                 table: "RecipeIngredients");
 
             migrationBuilder.DropIndex(
-                name: "IX_Publications_UserPermissionUserRolesId_UserPermissionAction",
-                table: "Publications");
-
-            migrationBuilder.DropIndex(
                 name: "IX_LikePublications_PublicationId",
-                table: "LikePublications");
-
-            migrationBuilder.DropIndex(
-                name: "IX_LikePublications_UserPermissionUserRolesId_UserPermissionAct~",
                 table: "LikePublications");
 
             migrationBuilder.DropIndex(
@@ -841,20 +601,8 @@ namespace backend.Migrations
                 table: "LikeIngredients");
 
             migrationBuilder.DropIndex(
-                name: "IX_LikeIngredients_UserPermissionUserRolesId_UserPermissionActi~",
-                table: "LikeIngredients");
-
-            migrationBuilder.DropIndex(
-                name: "IX_Ingredients_UserPermissionUserRolesId_UserPermissionAction",
-                table: "Ingredients");
-
-            migrationBuilder.DropIndex(
                 name: "IX_Images_PublicationId",
                 table: "Images");
-
-            migrationBuilder.DropIndex(
-                name: "IX_Groups_UserPermissionUserRolesId_UserPermissionAction",
-                table: "Groups");
 
             migrationBuilder.DropIndex(
                 name: "IX_GroupRoles_GroupId",
@@ -862,10 +610,6 @@ namespace backend.Migrations
 
             migrationBuilder.DropIndex(
                 name: "IX_CustomLists_UserId",
-                table: "CustomLists");
-
-            migrationBuilder.DropIndex(
-                name: "IX_CustomLists_UserPermissionUserRolesId_UserPermissionAction",
                 table: "CustomLists");
 
             migrationBuilder.DropIndex(
@@ -883,14 +627,6 @@ namespace backend.Migrations
             migrationBuilder.DropIndex(
                 name: "IX_Comments_UserId",
                 table: "Comments");
-
-            migrationBuilder.DropIndex(
-                name: "IX_Comments_UserPermissionUserRolesId_UserPermissionAction",
-                table: "Comments");
-
-            migrationBuilder.DropColumn(
-                name: "IngredientId",
-                table: "Users");
 
             migrationBuilder.DropColumn(
                 name: "PasswordHash",
@@ -917,76 +653,16 @@ namespace backend.Migrations
                 table: "Units");
 
             migrationBuilder.DropColumn(
-                name: "UserPermissionAction",
-                table: "Subscriptions");
-
-            migrationBuilder.DropColumn(
-                name: "UserPermissionUserRolesId",
-                table: "Subscriptions");
-
-            migrationBuilder.DropColumn(
                 name: "CustomListId",
                 table: "Recipes");
-
-            migrationBuilder.DropColumn(
-                name: "UserPermissionAction",
-                table: "Publications");
-
-            migrationBuilder.DropColumn(
-                name: "UserPermissionUserRolesId",
-                table: "Publications");
-
-            migrationBuilder.DropColumn(
-                name: "UserPermissionAction",
-                table: "LikePublications");
-
-            migrationBuilder.DropColumn(
-                name: "UserPermissionUserRolesId",
-                table: "LikePublications");
-
-            migrationBuilder.DropColumn(
-                name: "UserPermissionAction",
-                table: "LikeIngredients");
-
-            migrationBuilder.DropColumn(
-                name: "UserPermissionUserRolesId",
-                table: "LikeIngredients");
 
             migrationBuilder.DropColumn(
                 name: "Density",
                 table: "Ingredients");
 
             migrationBuilder.DropColumn(
-                name: "UserPermissionAction",
-                table: "Ingredients");
-
-            migrationBuilder.DropColumn(
                 name: "PublicationId",
                 table: "Images");
-
-            migrationBuilder.DropColumn(
-                name: "UserPermissionAction",
-                table: "Groups");
-
-            migrationBuilder.DropColumn(
-                name: "UserPermissionUserRolesId",
-                table: "Groups");
-
-            migrationBuilder.DropColumn(
-                name: "UserPermissionAction",
-                table: "CustomLists");
-
-            migrationBuilder.DropColumn(
-                name: "UserPermissionUserRolesId",
-                table: "CustomLists");
-
-            migrationBuilder.DropColumn(
-                name: "UserPermissionAction",
-                table: "Comments");
-
-            migrationBuilder.DropColumn(
-                name: "UserPermissionUserRolesId",
-                table: "Comments");
 
             migrationBuilder.RenameColumn(
                 name: "Username",
@@ -997,11 +673,6 @@ namespace backend.Migrations
                 name: "FollowerCount",
                 table: "Users",
                 newName: "Followers");
-
-            migrationBuilder.RenameColumn(
-                name: "UserPermissionUserRolesId",
-                table: "Ingredients",
-                newName: "RecipeId");
 
             migrationBuilder.AlterColumn<DateTime>(
                 name: "UpdatedAt",
@@ -1045,6 +716,13 @@ namespace backend.Migrations
                 type: "tinyint(1)",
                 nullable: false,
                 defaultValue: false);
+
+            migrationBuilder.AddColumn<Guid>(
+                name: "RecipeId",
+                table: "Ingredients",
+                type: "char(36)",
+                nullable: true,
+                collation: "ascii_general_ci");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Ingredients_RecipeId",
